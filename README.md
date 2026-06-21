@@ -117,5 +117,163 @@ Genomy grupowane są po kolumnie **`Assembly`** (numer GCF).
 - `length_aa` — długość sekwencji wyświetlanej (pełnej, gdy jest; inaczej dopasowania).
 - `n_DUF` — liczba wykrytych domen DUF (0–3).
 
-- # Instrukcja obsługi
-- 
+# Instrukcja uruchomienia GUI bazy danych
+
+Ta instrukcja prowadzi krok po kroku przez proces uruchomienia graficznego interfejsu użytkownika (GUI) na komputerze, na którym nie jest jeszcze zainstalowane żadne oprogramowanie programistyczne.
+
+---
+
+## Krok 1: Pobierz repozytorium z GitHub
+
+1. Wejdź na stronę repozytorium na GitHubie.
+2. Kliknij zielony przycisk **Code**, a następnie wybierz **Download ZIP**.
+3. Rozpakuj pobrany plik `.zip` w wygodnym miejscu na komputerze, np. na Pulpicie.
+
+Po rozpakowaniu folder powinien zawierać m.in.:
+
+- `gui.py` — kod aplikacji
+- `database.csv` — baza danych
+- `tree.svg` — drzewo filogenetyczne
+- `pyproject.toml` — lista bibliotek wymaganych przez aplikację
+- `uv.lock` — zablokowane wersje bibliotek
+- `README.md`
+
+---
+
+## Krok 2: Zainstaluj `uv`
+
+`uv` to narzędzie, które automatycznie zainstaluje odpowiednią wersję Pythona oraz wszystkie potrzebne biblioteki — nie trzeba niczego instalować ręcznie wcześniej.
+
+### Windows
+
+Otwórz **PowerShell** (wpisz w wyszukiwarce systemowej "PowerShell") i wklej:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### macOS
+
+Otwórz aplikację **Terminal** (Launchpad → Inne → Terminal) i wklej:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Po instalacji **zamknij i ponownie otwórz** okno terminala/PowerShell, aby zmiany zaczęły działać.
+
+Sprawdź, czy instalacja się powiodła:
+
+```bash
+uv --version
+```
+
+Powinna pojawić się informacja o numerze wersji (np. `uv 0.5.x`).
+
+---
+
+## Krok 3: Przejdź do folderu z aplikacją
+
+W oknie terminala/PowerShell przejdź do folderu, w którym rozpakowano repozytorium. Przykład (jeśli folder nazywa się `baza_zuzalizyny` i znajduje się na Pulpicie):
+
+**Windows:**
+```powershell
+cd Desktop\baza_zuzalizyny
+```
+
+**macOS:**
+```bash
+cd Desktop/baza_zuzalizyny
+```
+
+---
+
+## Krok 4: Zainstaluj zależności
+
+W folderze repozytorium znajdują się dwa pliki istotne dla `uv`:
+
+- **`pyproject.toml`** — lista bibliotek wymaganych przez aplikację oraz wersja Pythona
+- **`uv.lock`** — dokładne, zablokowane wersje wszystkich bibliotek, gwarantujące identyczne działanie aplikacji niezależnie od komputera
+
+Dzięki nim wystarczy jedna komenda, aby `uv` automatycznie:
+- pobrał odpowiednią wersję Pythona (jeśli nie jest jeszcze zainstalowana),
+- utworzył izolowane środowisko,
+- zainstalował wszystkie wymagane biblioteki w dokładnie tych wersjach, które zostały przetestowane.
+
+Wpisz w terminalu:
+
+```bash
+uv sync
+```
+
+Poczekaj, aż proces się zakończy (może to potrwać od kilkudziesięciu sekund do kilku minut, w zależności od szybkości łącza internetowego).
+
+---
+
+## Krok 5: Uruchom aplikację
+
+Po zakończeniu instalacji uruchom aplikację komendą:
+
+```bash
+uv run streamlit run gui.py
+```
+
+Aplikacja powinna **automatycznie otworzyć się w przeglądarce internetowej** pod adresem podobnym do:
+
+```
+http://localhost:8501
+```
+
+Jeśli przeglądarka nie otworzy się sama, skopiuj ten adres z terminala i wklej go ręcznie w pasek przeglądarki.
+
+---
+
+## Krok 6: Korzystanie z aplikacji
+
+W uruchomionej aplikacji można:
+
+- przeglądać i filtrować bazę danych organizmów według wybranych kryteriów (np. obecność peptydu sygnałowego, status T9SS),
+- przeglądać szczegółowe informacje o poszczególnych paralogach (sekwencja, domeny, motyw katalityczny),
+- przeglądać interaktywne drzewo filogenetyczne,
+- pobierać wybrane sekwencje w formacie `.fasta`.
+
+---
+
+## Zamykanie aplikacji
+
+Aby zatrzymać działanie aplikacji, wróć do okna terminala/PowerShell i naciśnij jednocześnie klawisze:
+
+```
+Ctrl + C
+```
+
+Następnie można zamknąć okno terminala.
+
+---
+
+## Najczęstsze problemy
+
+**„uv nie jest rozpoznawany jako polecenie”**
+Terminal/PowerShell został otwarty przed zainstalowaniem `uv` lub przed jego dodaniem do ścieżki systemowej. Zamknij i otwórz terminal ponownie, a następnie spróbuj jeszcze raz.
+
+**Polecenie `cd` nie znajduje folderu**
+Upewnij się, że ścieżka do folderu jest poprawna. W razie wątpliwości można przeciągnąć folder z Eksploratora plików / Findera bezpośrednio do okna terminala — ścieżka wstawi się automatycznie.
+
+**Strona w przeglądarce się nie otwiera**
+Sprawdź w oknie terminala, czy pojawił się adres zaczynający się od `http://localhost`, i wklej go ręcznie do przeglądarki.
+
+**Po zamknięciu terminala aplikacja przestaje działać**
+To normalne — aplikacja działa tylko, gdy terminal jest otwarty. Aby ją ponownie uruchomić, wystarczy powtórzyć Krok 5 (nie trzeba powtarzać Kroku 4).
+
+
+# Licencja
+
+Ten projekt jest udostępniony na licencji 
+[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+
+Oznacza to, że można:
+- swobodnie korzystać z danych i kodu w celach niekomercyjnych
+- modyfikować i rozwijać projekt
+
+pod warunkiem podania autora (cytowania) i niewykorzystywania 
+do celów komercyjnych.
