@@ -116,3 +116,6 @@ Genomy grupowane są po kolumnie **`Assembly`** (numer GCF).
 - `completeness_score` (0–5) — suma: motyw + DUF4953 + DUF5117 + DUF5118 + peptyd sygnałowy.
 - `length_aa` — długość sekwencji wyświetlanej (pełnej, gdy jest; inaczej dopasowania).
 - `n_DUF` — liczba wykrytych domen DUF (0–3).
+
+- # Instrukcja obsługi
+- 
